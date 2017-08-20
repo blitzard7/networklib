@@ -30,8 +30,7 @@ namespace NetworkLib
         public static byte[] GeneratePacket(byte[] data)
         {
             var tmpData = new List<byte>();
-            var header = BitConverter.GetBytes(data.Length);
-            tmpData.AddRange(header);
+            tmpData.AddRange(BitConverter.GetBytes(data.Length));
             tmpData.AddRange(data);
 
             return tmpData.ToArray();
