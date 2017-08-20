@@ -7,7 +7,7 @@
 4. Push your changes back to GitHub
 5. Start a pull request on the repository
 
-# Issues
+### Issues
 If you find a problem please: <br>
 
 * Describe the problem
