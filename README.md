@@ -28,9 +28,9 @@ var client = new Client(ip, port);
 - Initialization
 ```cs
 var server = new Server(IPAddress.Loopback, 7337); 
-server.OnClientConnected += ServerOnClientConnected; // notification for connected client.
-server.OnClientDisconnected += ServerOnClientDisconnected; // notification for disconnected client.
-server.OnClientRequestReceived += ServerOnClientRequestReceived; // notification for clients request received.
+server.OnClientConnected += ServerOnClientConnected; // callback for connected client.
+server.OnClientDisconnected += ServerOnClientDisconnected; // callback for disconnected client.
+server.OnClientRequestReceived += ServerOnClientRequestReceived; // callback for clients request received.
 server.Start(); // starting server.
 
 ```
@@ -41,7 +41,7 @@ server.Start(); // starting server.
 
 ```cs
  var client = new Client(IPAddress.Parse("127.0.0.1"), 7337); // using server's IPAddress and running on port 7337.
-client.OnDataReceived += ClientOnDataReceived; // notification for received data.
+client.OnDataReceived += ClientOnDataReceived; // callback for received data.
 client.Start(); // starting client.
 ```
 
@@ -56,7 +56,7 @@ client.SendToServer(packet); // sending packet to server.
 - Initialization
 ```cs
 var udp = new Udp(new IPEndPoint(IPAddress.Loopback, 7337));
-udp.OnEndPointReceived += UdpOnEndPointReceived; // notification for received end-point.
+udp.OnEndPointReceived += UdpOnEndPointReceived; // callback for received end-point.
 ```
 
 
