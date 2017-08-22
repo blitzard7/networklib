@@ -53,6 +53,8 @@ namespace NetworkLib
         {
             _client = client;
             _stream = client.GetStream();
+            IsActive = true;
+            ReceiveData();
         }
         #endregion Ctor
 
