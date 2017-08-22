@@ -70,5 +70,5 @@ If you are interested on contributing please read [CONTRIBUTING.md](https://gith
 2. Add a reference to the built NetworkLib.dll in your solution
 3. Add the following using-statement to your project files:
 ```cs
-using NetworkLib.dll;
+using NetworkLib;
 ```
