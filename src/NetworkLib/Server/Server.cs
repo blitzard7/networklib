@@ -148,18 +148,17 @@ namespace NetworkLib
         /// <param name="data">Contains the to send data.</param>
         public void SendBackToClient(byte[] data)
         {
-
             try
             {
                 foreach (var cc in ConnectedClients)
                 {
-                    cc.Stream.Write(data, 0, data.Length);
+                    if (cc.IsActive)
+                    {
+                        cc.Stream.Write(data, 0, data.Length);
+                    }
                 }
             }
-            catch (ObjectDisposedException)
-            {
-
-            }
+            catch (ObjectDisposedException) { }
             catch (IOException) { }
         }
 
