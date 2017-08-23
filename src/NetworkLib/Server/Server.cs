@@ -42,19 +42,24 @@ namespace NetworkLib
         }
 
         /// <summary>
-        ///     Represents the <see cref="NewClientConnectedEventArgs"/> event.
+        ///     Represents the <see cref="NewClientConnectedEventArgs"/>.
         /// </summary>
         public event EventHandler<NewClientConnectedEventArgs> OnClientConnected;
 
         /// <summary>
-        ///     Represents the <see cref="ClientDisconnectedEventArgs"/> event.
+        ///     Represents the <see cref="ClientDisconnectedEventArgs"/>.
         /// </summary>
         public event EventHandler<ClientDisconnectedEventArgs> OnClientDisconnected;
 
         /// <summary>
-        ///     Represents the <see cref="ClientRequestReceivedEventArgs"/> event.
+        ///     Represents the <see cref="ClientRequestReceivedEventArgs"/>.
         /// </summary>
         public event EventHandler<ClientRequestReceivedEventArgs> OnClientRequestReceived;
+
+        /// <summary>
+        ///     Represents the <see cref="ConnectionLostEventArgs"/>.
+        /// </summary>
+        public event EventHandler<ConnectionLostEventArgs> OnConnectionLost;
 
         /// <summary>
         /// Gets a value indicating whether the server is active or not.
@@ -151,8 +156,10 @@ namespace NetworkLib
                     cc.Stream.Write(data, 0, data.Length);
                 }
             }
-            catch (SocketException) { }
-            catch (ObjectDisposedException) { }
+            catch (ObjectDisposedException)
+            {
+
+            }
             catch (IOException) { }
         }
 
@@ -185,6 +192,15 @@ namespace NetworkLib
         }
 
         /// <summary>
+        ///     Fires the <see cref="OnConnectionLost"/> event if the connection has been lost.
+        /// </summary>
+        /// <param name="message">[Optional] The message info.</param>
+        protected void FireOnConnectionLost(string message = "")
+        {
+            OnConnectionLost?.Invoke(this, new ConnectionLostEventArgs(message));
+        }
+
+        /// <summary>
         ///     Listens over the network for incoming data.
         /// </summary>
         private void Listen()
@@ -202,9 +218,11 @@ namespace NetworkLib
                         FireOnClientConnected(cc);
                     }
                 }
-                catch (SocketException) { IsActive = false; }
-                catch (ObjectDisposedException) { IsActive = false; }
-                catch (IOException) { IsActive = false; }
+                catch (SocketException)
+                {
+                    IsActive = false;
+                    FireOnConnectionLost("[Socket exception encountered]");
+                }
             }).Start();
         }
 

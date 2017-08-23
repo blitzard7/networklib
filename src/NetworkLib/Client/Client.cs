@@ -59,10 +59,14 @@ namespace NetworkLib
         #endregion Ctor
 
         /// <summary>
-        ///     Represents the <see cref="ClientDataReceivedEventArgs"/> event.
-        ///     Is raised if new data has been received.
+        ///     Represents the <see cref="ClientDataReceivedEventArgs"/>.
         /// </summary>
         public event EventHandler<ClientDataReceivedEventArgs> OnDataReceived;
+
+        /// <summary>
+        ///     Represents the <see cref="ConnectionLostEventArgs"/>.
+        /// </summary>
+        public event EventHandler<ConnectionLostEventArgs> OnConnectionLost;
 
         /// <summary>
         /// Gets or sets a value indicating whether the client is active or not.
@@ -130,12 +134,25 @@ namespace NetworkLib
                 throw new InvalidOperationException("Client is already running.");
             }
 
-            _client = new TcpClient();
-            _client.Connect(_ep);
-            _stream = _client.GetStream();
-            IsActive = true;
+            try
+            {
+                _client = new TcpClient();
+                _client.Connect(_ep);
+                _stream = _client.GetStream();
+                IsActive = true;
 
-            ReceiveData();
+                ReceiveData();
+            }
+            catch (SocketException)
+            {
+                IsActive = false;
+                FireOnConnectionLost("[Can't connect to server]");
+            }
+            catch (ObjectDisposedException)
+            {
+                IsActive = false;
+                FireOnConnectionLost("[Stream disposed]");
+            }
         }
 
         /// <summary>
@@ -161,11 +178,19 @@ namespace NetworkLib
         {
             try
             {
-                _stream.Write(data, 0, data.Length);
+                var packet = Packet.GeneratePacket(data);
+                _stream.Write(packet, 0, packet.Length);
             }
-            catch (SocketException) { IsActive = false; }
-            catch (ObjectDisposedException) { IsActive = false; }
-            catch (IOException) { IsActive = false; }
+            catch (ObjectDisposedException)
+            {
+                IsActive = false;
+                FireOnConnectionLost("[Stream disposed]");
+            }
+            catch (IOException)
+            {
+                IsActive = false;
+                FireOnConnectionLost("[Connection to remote endpoint lost]");
+            }
         }
 
         /// <summary>
@@ -175,6 +200,15 @@ namespace NetworkLib
         protected void FireOnDataReceived(byte[] data)
         {
             OnDataReceived?.Invoke(this, new ClientDataReceivedEventArgs(data));
+        }
+
+        /// <summary>
+        ///     Fires the <see cref="OnConnectionLost"/> event if the connection has been lost.
+        /// </summary>
+        /// <param name="message">[Optional] The message info.</param>
+        protected void FireOnConnectionLost(string message = "")
+        {
+            OnConnectionLost?.Invoke(this, new ConnectionLostEventArgs(message));
         }
 
         /// <summary>
@@ -192,9 +226,16 @@ namespace NetworkLib
                         FireOnDataReceived(data);
                     }
                 }
-                catch (SocketException) { IsActive = false; }
-                catch (ObjectDisposedException) { IsActive = false; }
-                catch (IOException) { IsActive = false; }
+                catch (ObjectDisposedException)
+                {
+                    IsActive = false;
+                    FireOnConnectionLost("[Stream disposed]");
+                }
+                catch (IOException)
+                {
+                    IsActive = false;
+                    FireOnConnectionLost("[Connection to remote endpoint lost]");
+                }
             }).Start();
         }
     }
