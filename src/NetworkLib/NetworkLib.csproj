@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\ClientRequest.cs" />
-    <Compile Include="ConnectionLostEventArgs.cs" />
+    <Compile Include="Events\ConnectionLostEventArgs.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="UDP\EndPointReceivedEventArgs.cs" />
     <Compile Include="Extension.cs" />
@@ -58,8 +58,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UDP\Udp.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
