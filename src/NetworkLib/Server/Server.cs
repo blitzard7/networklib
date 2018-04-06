@@ -71,6 +71,7 @@ namespace NetworkLib
 
         /// <summary>
         /// Gets the connected clients.
+        /// bla.
         /// </summary>
         /// <value>
         ///     A list represented by <see cref="Client"/>.
