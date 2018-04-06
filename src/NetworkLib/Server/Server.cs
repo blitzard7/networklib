@@ -80,9 +80,6 @@ namespace NetworkLib
         /// <summary>
         /// Gets the IP address.
         /// </summary>
-        /// <value>
-        ///     Contains the server's IP address.
-        /// </value>
         public IPAddress Ip => ((IPEndPoint)_listener.Server.RemoteEndPoint).Address;
 
         /// <summary>
