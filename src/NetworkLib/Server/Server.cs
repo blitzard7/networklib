@@ -83,10 +83,7 @@ namespace NetworkLib
         /// <value>
         ///     Contains the server's IP address.
         /// </value>
-        public IPAddress IP
-        {
-            get { return ((IPEndPoint)_listener.Server.RemoteEndPoint).Address; }
-        }
+        public IPAddress IP => ((IPEndPoint)_listener.Server.RemoteEndPoint).Address;
 
         /// <summary>
         /// Gets the port.
@@ -97,7 +94,7 @@ namespace NetworkLib
         /// <exception cref="ArgumentOutOfRangeException">Is thrown if the port has been set less than 0.</exception>
         public int Port
         {
-            get { return _port; }
+            get => _port;
             private set
             {
                 if (_port < 0)
@@ -187,7 +184,7 @@ namespace NetworkLib
         /// <param name="sender">Contains the client who has sent the request.</param>
         protected void FireOnClientRequestReceived(byte[] cr, Client sender)
         {
-            OnClientRequestReceived(this, new ClientRequestReceivedEventArgs(cr, sender));
+            OnClientRequestReceived?.Invoke(this, new ClientRequestReceivedEventArgs(cr, sender));
         }
 
         /// <summary>
