@@ -83,7 +83,7 @@ namespace NetworkLib
         /// <value>
         ///     Contains the server's IP address.
         /// </value>
-        public IPAddress IP => ((IPEndPoint)_listener.Server.RemoteEndPoint).Address;
+        public IPAddress Ip => ((IPEndPoint)_listener.Server.RemoteEndPoint).Address;
 
         /// <summary>
         /// Gets the port.
