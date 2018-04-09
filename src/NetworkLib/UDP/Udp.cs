@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace NetworkLib
+namespace NetworkLib.UDP
 {
     /// <summary>
     ///     Represents the <see cref="Udp"/> class.
@@ -13,7 +13,7 @@ namespace NetworkLib
         /// <summary>
         ///     Represents the <see cref="UdpClient"/> client.
         /// </summary>
-        private UdpClient _udpClient;
+        private readonly UdpClient _udpClient;
 
         /// <summary>
         ///     Represents the <see cref="IPEndPoint"/> udp's IP end point.
@@ -78,7 +78,7 @@ namespace NetworkLib
         private void ReceiveData(IAsyncResult ar)
         {
             var endPoint = new IPEndPoint(IPAddress.Any, 0);
-            byte[] data = _udpClient.EndReceive(ar, ref endPoint);
+            var data = _udpClient.EndReceive(ar, ref endPoint);
             FireOnEndPointReceived(endPoint);
         }
     }

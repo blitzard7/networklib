@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NetworkLib
+namespace NetworkLib.Client
 {
     /// <summary>
     ///     Represents the <see cref="ClientDataReceivedEventArgs"/> class.
@@ -8,8 +8,9 @@ namespace NetworkLib
     /// <seealso cref="EventArgs" />
     public class ClientDataReceivedEventArgs : EventArgs
     {
+        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientDataReceivedEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="T:NetworkLib.Client.ClientDataReceivedEventArgs" /> class.
         /// </summary>
         /// <param name="data">Contains the received data.</param>
         public ClientDataReceivedEventArgs(byte[] data)

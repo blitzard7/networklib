@@ -44,7 +44,7 @@
     <Compile Include="Events\ConnectionLostEventArgs.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="UDP\EndPointReceivedEventArgs.cs" />
-    <Compile Include="Extension.cs" />
+    <Compile Include="Extensions\Extension.cs" />
     <Compile Include="Packet\Packet.cs" />
     <Compile Include="Enums\RequestType.cs" />
     <Compile Include="Enums\ResponseType.cs" />

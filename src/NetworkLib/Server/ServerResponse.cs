@@ -1,6 +1,7 @@
 ﻿using System;
+using NetworkLib.Enums;
 
-namespace NetworkLib
+namespace NetworkLib.Server
 {
     /// <summary>
     ///     Represents the <see cref="ServerResponse"/> class.

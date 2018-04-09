@@ -1,6 +1,7 @@
 ﻿using System;
+using NetworkLib.Enums;
 
-namespace NetworkLib
+namespace NetworkLib.Client
 {
     /// <summary>
     ///     Represents the <see cref="ClientRequest"/> class.

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 
-namespace NetworkLib
+namespace NetworkLib.Extensions
 {
     /// <summary>
     ///     Represents the <see cref="Extension"/> class.
@@ -29,13 +29,13 @@ namespace NetworkLib
                 throw new InvalidOperationException("Header length is incorrect!");
             }
 
-            int totalLength = BitConverter.ToInt32(data, 0);
-            int readLength = totalLength;
+            var totalLength = BitConverter.ToInt32(data, 0);
+            var readLength = totalLength;
 
             while (tmpData.Count < totalLength)
             {
                 var buffer = new byte[readLength];
-                int bufferSize = stream.Read(buffer, 0, buffer.Length);
+                var bufferSize = stream.Read(buffer, 0, buffer.Length);
                 tmpData.AddRange(buffer);
 
                 readLength -= bufferSize;

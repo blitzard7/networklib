@@ -1,69 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
-namespace NetworkLib
+namespace NetworkLib.Logger
 {
     /// <summary>
     ///     Represents the <see cref="Log" /> class.
     ///     Logs each event that happens into a .txt file for further information.
     /// </summary>
-    public class Log
+    public static class Log
     {
-        /// <summary>
-        ///     Represents the path where the log file is stored.
-        /// </summary>
-        private string _path;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Log"/> class.
-        /// </summary>
-        /// <param name="path">Contains the given path.</param>
-        public Log(string path)
-        {
-            _path = path;
-        }
-
-        /// <summary>
-        /// Gets the path.
-        /// </summary>
-        /// <value>
-        ///     Contains the path of the log file.
-        /// </value>
-        public string Path
-        {
-            get { return _path; }
-            private set
-            {
-                _path = value;
-            }
-        }
-
-        /// <summary>
-        ///     Changes the path into another one.
-        /// </summary>
-        /// <param name="newPath">Contains the new path.</param>
-        public void ChangePath(string newPath)
-        {
-            _path = newPath;
-        }
+        private static readonly string _loggingPath = Environment.ExpandEnvironmentVariables(@"%AppData\");
+        private static int _counter = 0;
 
         /// <summary>
         ///     Starts logging.
         /// </summary>
-        public void Start()
+        public static void Start(string message)
         {
-           throw new NotImplementedException();
-        }
+            var fs = new FileStream(_loggingPath + _counter, FileMode.Append, FileAccess.Write);
+            try
+            {
+                using (var writer = new StreamWriter(fs))
+                {
+                    writer.WriteLine($"[{DateTime.Now}]: {message}");
+                }
+            }
+            finally
+            {
+                fs?.Dispose();
+            }
 
-        /// <summary>
-        ///     Stops logging.
-        /// </summary>
-        public void Stop()
-        {
-            throw new NotImplementedException();
+            _counter++;
         }
     }
 }

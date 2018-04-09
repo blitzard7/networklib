@@ -4,15 +4,16 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using NetworkLib.Client;
+using NetworkLib.Events;
 
-namespace NetworkLib
+namespace NetworkLib.Server
 {
     /// <summary>
     ///     Represents the <see cref="Server"/> class.
     /// </summary>
     public class Server
     {
-        #region Fields
         /// <summary>
         ///     Represents the <see cref="TcpListener"/> server listener.
         /// </summary>
@@ -21,13 +22,12 @@ namespace NetworkLib
         /// <summary>
         ///     Represents the <see cref="IPEndPoint"/> server's IP end point.
         /// </summary>
-        private IPEndPoint _ep;
+        private readonly IPEndPoint _ep;
 
         /// <summary>
         ///     Represents the connection port.
         /// </summary>
         private int _port;
-        #endregion Fields
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Server"/> class.
@@ -38,7 +38,7 @@ namespace NetworkLib
         {
             _ep = new IPEndPoint(ip, port);
             _port = port;
-            ConnectedClients = new List<Client>();
+            ConnectedClients = new List<Client.Client>();
         }
 
         /// <summary>
@@ -71,12 +71,11 @@ namespace NetworkLib
 
         /// <summary>
         /// Gets the connected clients.
-        /// bla.
         /// </summary>
         /// <value>
-        ///     A list represented by <see cref="Client"/>.
+        ///     A list represented by <see cref="NetworkLib.Client"/>.
         /// </value>
-        public List<Client> ConnectedClients { get; private set; }
+        public List<Client.Client> ConnectedClients { get; private set; }
 
         /// <summary>
         /// Gets the IP address.
@@ -89,20 +88,7 @@ namespace NetworkLib
         /// <value>
         ///     Contains the value of the port.
         /// </value>
-        /// <exception cref="ArgumentOutOfRangeException">Is thrown if the port has been set less than 0.</exception>
-        public int Port
-        {
-            get => _port;
-            private set
-            {
-                if (_port < 0)
-                {
-                    throw new ArgumentOutOfRangeException("Port can't be less than 0!");
-                }
-
-                _port = value;
-            }
-        }
+        public int Port => _port;
 
         /// <summary>
         ///     Starts the server.
@@ -161,7 +147,7 @@ namespace NetworkLib
         ///     Fires the <see cref="OnClientConnected"/> event if a new client has been connected.
         /// </summary>
         /// <param name="c">Contains the new connected client.</param>
-        protected void FireOnClientConnected(Client c)
+        protected void FireOnClientConnected(Client.Client c)
         {
             OnClientConnected?.Invoke(this, new NewClientConnectedEventArgs(c));
         }
@@ -170,7 +156,7 @@ namespace NetworkLib
         ///     Fires the <see cref="OnClientDisconnected"/> event if a client has been disconnected.
         /// </summary>
         /// <param name="c">Contains the disconnected client.</param>
-        protected void FireOnClientDisconnected(Client c)
+        protected void FireOnClientDisconnected(Client.Client c)
         {
             OnClientDisconnected?.Invoke(this, new ClientDisconnectedEventArgs(c));
         }
@@ -180,7 +166,7 @@ namespace NetworkLib
         /// </summary>
         /// <param name="cr">Contains the client's request.</param>
         /// <param name="sender">Contains the client who has sent the request.</param>
-        protected void FireOnClientRequestReceived(byte[] cr, Client sender)
+        protected void FireOnClientRequestReceived(byte[] cr, Client.Client sender)
         {
             OnClientRequestReceived?.Invoke(this, new ClientRequestReceivedEventArgs(cr, sender));
         }
@@ -206,7 +192,7 @@ namespace NetworkLib
                     while (IsActive)
                     {
                         var client = _listener.AcceptTcpClient();
-                        var cc = new Client(client);
+                        var cc = new Client.Client(client);
                         cc.OnDataReceived += ClientOnDataReceived;
                         ConnectedClients.Add(cc);
                         FireOnClientConnected(cc);
@@ -221,7 +207,7 @@ namespace NetworkLib
         }
 
         /// <summary>
-        ///     Callback method for <see cref="Client.OnDataReceived"/> event: is called if the server receives data from the client.
+        ///     Callback method for <see cref="NetworkLib.Client.OnDataReceived"/> event: is called if the server receives data from the client.
         /// </summary>
         /// <param name="sender">Contains the given sender.</param>
         /// <param name="e">The <see cref="ClientDataReceivedEventArgs"/> instance containing the event data.</param>
@@ -229,7 +215,7 @@ namespace NetworkLib
         {
             try
             {
-                var cc = (Client)sender;
+                var cc = (Client.Client)sender;
 
                 FireOnClientRequestReceived(e.Data, cc);
             }

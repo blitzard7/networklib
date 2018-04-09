@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NetworkLib
+namespace NetworkLib.Server
 {
     /// <summary>
     ///     Represents the <see cref="NewClientConnectedEventArgs"/> class.
@@ -8,13 +8,15 @@ namespace NetworkLib
     /// <seealso cref="System.EventArgs" />
     public class NewClientConnectedEventArgs : EventArgs
     {
+        private readonly Client.Client _newClient;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NewClientConnectedEventArgs"/> class.
         /// </summary>
         /// <param name="c">Contains the new connected client.</param>
-        public NewClientConnectedEventArgs(Client c)
+        public NewClientConnectedEventArgs(Client.Client c)
         {
-            NewClient = c;
+            _newClient = c;
         }
 
         /// <summary>
@@ -23,6 +25,6 @@ namespace NetworkLib
         /// <value>
         ///     Contains information about the new connected client.
         /// </value>
-        public Client NewClient { get; private set; }
+        public Client.Client NewClient => _newClient;
     }
 }

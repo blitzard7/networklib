@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
-namespace NetworkLib
+namespace NetworkLib.Server
 {
     /// <summary>
     ///     Represents the <see cref="ClientRequestReceivedEventArgs"/> class.
@@ -8,15 +10,18 @@ namespace NetworkLib
     /// <seealso cref="System.EventArgs" />
     public class ClientRequestReceivedEventArgs : EventArgs
     {
+        private readonly byte[] _clientRequestData;
+        private readonly Client.Client _sender;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientRequestReceivedEventArgs"/> class.
         /// </summary>
         /// <param name="cr">Contains the client's request.</param>
         /// <param name="sender">Contains the client who has sent the request.</param>
-        public ClientRequestReceivedEventArgs(byte[] cr, Client sender)
+        public ClientRequestReceivedEventArgs(byte[] cr, Client.Client sender)
         {
-            ClientRequestData = cr;
-            Sender = sender;
+            _clientRequestData = cr;
+            _sender = sender;
         }
 
         /// <summary>
@@ -25,7 +30,7 @@ namespace NetworkLib
         /// <value>
         ///     Contains the client's request as bytes.
         /// </value>
-        public byte[] ClientRequestData { get; private set; }
+        public byte[] ClientRequestData => _clientRequestData;
 
         /// <summary>
         /// Gets the sender.
@@ -33,6 +38,6 @@ namespace NetworkLib
         /// <value>
         ///     Contains information about the client who has sent the request.
         /// </value>
-        public Client Sender { get; private set; }
+        public Client.Client Sender => _sender;
     }
 }

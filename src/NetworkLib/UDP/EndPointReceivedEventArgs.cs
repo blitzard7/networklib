@@ -1,19 +1,21 @@
 ﻿using System.Net;
 
-namespace NetworkLib
+namespace NetworkLib.UDP
 {
     /// <summary>
     ///     Represents the <see cref="EndPointReceivedEventArgs"/> class.
     /// </summary>
     public class EndPointReceivedEventArgs
     {
+        private readonly IPEndPoint _ep;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EndPointReceivedEventArgs"/> class.
         /// </summary>
         /// <param name="ep">Contains the received <see cref="IPEndPoint"/>.</param>
         public EndPointReceivedEventArgs(IPEndPoint ep)
         {
-            EP = ep;
+            _ep = ep;
         }
 
         /// <summary>
@@ -22,6 +24,6 @@ namespace NetworkLib
         /// <value>
         ///     Contains the received IP end point.
         /// </value>
-        public IPEndPoint EP { get; private set; }
+        public IPEndPoint Ep => _ep;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NetworkLib
+namespace NetworkLib.Server
 {
     /// <summary>
     ///     Represents the <see cref="ClientDisconnectedEventArgs"/> class.
@@ -13,7 +13,7 @@ namespace NetworkLib
         /// Initializes a new instance of the <see cref="ClientDisconnectedEventArgs"/> class.
         /// </summary>
         /// <param name="c">Contains the disconnected client.</param>
-        public ClientDisconnectedEventArgs(Client c)
+        public ClientDisconnectedEventArgs(Client.Client c)
         {
             DisconnectedClient = c;
         }
@@ -24,6 +24,6 @@ namespace NetworkLib
         /// <value>
         ///     Contains information about the disconnected client.
         /// </value>
-        public Client DisconnectedClient { get; private set; }
+        public Client.Client DisconnectedClient { get; private set; }
     }
 }

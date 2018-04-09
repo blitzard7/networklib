@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NetworkLib
+namespace NetworkLib.Packet
 {
     /// <summary>
     ///     Represents the <see cref="Packet"/> class.

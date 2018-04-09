@@ -1,4 +1,4 @@
-﻿namespace NetworkLib
+﻿namespace NetworkLib.Enums
 {
     /// <summary>
     ///     Represents the <see cref="RequestType"/> enumeration.

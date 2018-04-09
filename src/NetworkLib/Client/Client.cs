@@ -3,15 +3,17 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using NetworkLib.Events;
+using NetworkLib.Extensions;
+using NetworkLib.Logger;
 
-namespace NetworkLib
+namespace NetworkLib.Client
 {
     /// <summary>
     ///     Represents the <see cref="Client"/> class.
     /// </summary>
     public class Client
     {
-        #region Fields
         /// <summary>
         ///     Represents the <see cref="TcpClient"/> client.
         /// </summary>
@@ -25,15 +27,13 @@ namespace NetworkLib
         /// <summary>
         ///     Represents the client's IP end point.
         /// </summary>
-        private IPEndPoint _ep;
+        private readonly IPEndPoint _ep;
 
         /// <summary>
         ///     Represents the port.
         /// </summary>
         private int _port;
-        #endregion Fields
 
-        #region Ctor
         /// <summary>
         /// Initializes a new instance of the <see cref="Client"/> class.
         /// </summary>
@@ -56,7 +56,6 @@ namespace NetworkLib
             IsActive = true;
             ReceiveData();
         }
-        #endregion Ctor
 
         /// <summary>
         ///     Represents the <see cref="ClientDataReceivedEventArgs"/>.
@@ -83,19 +82,7 @@ namespace NetworkLib
         ///     Contains the port value.
         /// </value>
         /// <exception cref="ArgumentOutOfRangeException">Is thrown if the value of the port was set to 0.</exception>
-        public int Port
-        {
-            get { return _port; }
-            private set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentOutOfRangeException("Port can't be set less than 0!");
-                }
-
-                _port = value;
-            }
-        }
+        public int Port => _port;
 
         /// <summary>
         /// Gets the ip.
@@ -103,10 +90,7 @@ namespace NetworkLib
         /// <value>
         ///     Contains the IP address of the client.
         /// </value>
-        public IPAddress IP
-        {
-            get { return ((IPEndPoint)_client.Client.RemoteEndPoint).Address; }
-        }
+        public IPAddress Ip => ((IPEndPoint)_client.Client.RemoteEndPoint).Address;
 
         /// <summary>
         /// Gets the stream.
@@ -116,11 +100,8 @@ namespace NetworkLib
         /// </value>
         public NetworkStream Stream
         {
-            get { return _stream; }
-            private set
-            {
-                _stream = value;
-            }
+            get => _stream;
+            private set => _stream = value;
         }
 
         /// <summary>
@@ -147,11 +128,13 @@ namespace NetworkLib
             {
                 IsActive = false;
                 FireOnConnectionLost("[Can't connect to server]");
+                Log.Start("Stream has been disposed.");
             }
             catch (ObjectDisposedException)
             {
                 IsActive = false;
                 FireOnConnectionLost("[Stream disposed]");
+                Log.Start("Stream has been disposed.");
             }
         }
 
@@ -163,6 +146,7 @@ namespace NetworkLib
         {
             if (!IsActive)
             {
+                Log.Start($"Throwing exception: {nameof(InvalidOperationException)}. Client has already been stopped!");
                 throw new InvalidOperationException("Client has already been stopped!");
             }
 
@@ -178,18 +162,23 @@ namespace NetworkLib
         {
             try
             {
-                var packet = Packet.GeneratePacket(data);
+                var packet = Packet.Packet.GeneratePacket(data);
+
+                Log.Start($"Packet successfully generated for {data.Length} amount on bytes." +
+                          $"Writing packet into stream.");
                 _stream.Write(packet, 0, packet.Length);
             }
             catch (ObjectDisposedException)
             {
                 IsActive = false;
                 FireOnConnectionLost("[Stream disposed]");
+                Log.Start("Stream has been disposed.");
             }
             catch (IOException)
             {
                 IsActive = false;
                 FireOnConnectionLost("[Connection to remote endpoint lost]");
+                Log.Start("Stream has been disposed.");
             }
         }
 
@@ -222,19 +211,22 @@ namespace NetworkLib
                 {
                     while (IsActive)
                     {
-                        byte[] data = _stream.ReceivePacketDataFrom();
+                        var data = _stream.ReceivePacketDataFrom();
                         FireOnDataReceived(data);
+                        Log.Start($"Received {data.Length} amount on data.");
                     }
                 }
                 catch (ObjectDisposedException)
                 {
                     IsActive = false;
                     FireOnConnectionLost("[Stream disposed]");
+                    Log.Start("Stream has been disposed.");
                 }
                 catch (IOException)
                 {
                     IsActive = false;
                     FireOnConnectionLost("[Connection to remote endpoint lost]");
+                    Log.Start("Connection to remote endpoint lost.");
                 }
             }).Start();
         }
