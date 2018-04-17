@@ -9,15 +9,15 @@ namespace NetworkLib.Logger
     /// </summary>
     public static class Log
     {
-        private static readonly string _loggingPath = Environment.ExpandEnvironmentVariables(@"%AppData\");
-        private static int _counter = 0;
+        private static readonly string _loggingPath = Environment.ExpandEnvironmentVariables(@"%AppData%\");
+        private static string _fileName = "Network_Log";
 
         /// <summary>
         ///     Starts logging.
         /// </summary>
         public static void Start(string message)
         {
-            var fs = new FileStream(_loggingPath + _counter, FileMode.Append, FileAccess.Write);
+            var fs = new FileStream(_loggingPath + _fileName, FileMode.Append, FileAccess.Write);
             try
             {
                 using (var writer = new StreamWriter(fs))
@@ -29,8 +29,6 @@ namespace NetworkLib.Logger
             {
                 fs?.Dispose();
             }
-
-            _counter++;
         }
     }
 }

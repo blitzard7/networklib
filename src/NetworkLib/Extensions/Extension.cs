@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Text;
+using NetworkLib.Logger;
 
 namespace NetworkLib.Extensions
 {
@@ -42,6 +44,27 @@ namespace NetworkLib.Extensions
             }
 
             return tmpData.ToArray();
+        }
+
+        /// <summary>
+        /// Gets the string from the received bytes.
+        /// Uses ASCII for encoding.
+        /// </summary>
+        /// <exception cref="ArgumentException">Is thrown when the argument passed to this method is not valid.</exception>
+        /// <exception cref="ArgumentNullException">Is thrown when a null reference is passed.</exception>
+        /// <exception cref="DecoderFallbackException"></exception>
+        /// <param name="data">The bytes.</param>
+        /// <returns>
+        /// Returns the encoded string.
+        /// </returns>
+        public static string EncodeReceivedBytesAsString(this byte[] data)
+        {
+            var encodedData = Encoding.ASCII.GetString(data);
+
+            Log.Start(
+                $"Method: {nameof(EncodeReceivedBytesAsString)} called. Encoded {data.Length} using {nameof(Encoding.ASCII)}.");
+
+            return encodedData;
         }
     }
 }
