@@ -2,10 +2,11 @@
 
 namespace NetworkLib.Server
 {
+    /// <inheritdoc />
     /// <summary>
-    ///     Represents the <see cref="ClientDisconnectedEventArgs"/> class.
+    ///     Represents the <see cref="T:NetworkLib.Server.ClientDisconnectedEventArgs" /> class.
     /// </summary>
-    /// <seealso cref="System.EventArgs" />
+    /// <seealso cref="T:System.EventArgs" />
     public class ClientDisconnectedEventArgs : EventArgs
     {
 
@@ -24,6 +25,6 @@ namespace NetworkLib.Server
         /// <value>
         ///     Contains information about the disconnected client.
         /// </value>
-        public Client.Client DisconnectedClient { get; private set; }
+        public Client.Client DisconnectedClient { get; }
     }
 }

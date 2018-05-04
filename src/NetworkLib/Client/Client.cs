@@ -10,29 +10,29 @@ using NetworkLib.Logger;
 namespace NetworkLib.Client
 {
     /// <summary>
-    ///     Represents the <see cref="Client"/> class.
+    /// Represents the <see cref="Client"/> class.
     /// </summary>
     public class Client
     {
         /// <summary>
-        ///     Represents the <see cref="TcpClient"/> client.
+        /// Represents the <see cref="TcpClient"/> client.
         /// </summary>
         private TcpClient _client;
 
         /// <summary>
-        ///     Represents the client's network stream.
+        /// Represents the client's network stream.
         /// </summary>
         private NetworkStream _stream;
 
         /// <summary>
-        ///     Represents the client's IP end point.
+        /// Represents the client's IP end point.
         /// </summary>
         private readonly IPEndPoint _ep;
 
         /// <summary>
-        ///     Represents the port.
+        /// Represents the port.
         /// </summary>
-        private int _port;
+        private readonly int _port;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Client"/> class.
@@ -58,54 +58,37 @@ namespace NetworkLib.Client
         }
 
         /// <summary>
-        ///     Represents the <see cref="ClientDataReceivedEventArgs"/>.
+        /// Represents the <see cref="ClientDataReceivedEventArgs"/>.
         /// </summary>
         public event EventHandler<ClientDataReceivedEventArgs> OnDataReceived;
 
         /// <summary>
-        ///     Represents the <see cref="ConnectionLostEventArgs"/>.
+        /// Represents the <see cref="ConnectionLostEventArgs"/>.
         /// </summary>
         public event EventHandler<ConnectionLostEventArgs> OnConnectionLost;
 
         /// <summary>
         /// Gets or sets a value indicating whether the client is active or not.
         /// </summary>
-        /// <value>
-        ///   Is true if the client is active.
-        /// </value>
         public bool IsActive { get; set; }
 
         /// <summary>
         /// Gets the port.
         /// </summary>
-        /// <value>
-        ///     Contains the port value.
-        /// </value>
-        /// <exception cref="ArgumentOutOfRangeException">Is thrown if the value of the port was set to 0.</exception>
         public int Port => _port;
 
         /// <summary>
-        /// Gets the ip.
+        /// Gets the client's IP address.
         /// </summary>
-        /// <value>
-        ///     Contains the IP address of the client.
-        /// </value>
         public IPAddress Ip => ((IPEndPoint)_client.Client.RemoteEndPoint).Address;
 
         /// <summary>
         /// Gets the stream.
         /// </summary>
-        /// <value>
-        ///     Contains the client's stream.
-        /// </value>
-        public NetworkStream Stream
-        {
-            get => _stream;
-            private set => _stream = value;
-        }
+        public NetworkStream Stream => _stream;
 
         /// <summary>
-        ///     Starts the client.
+        /// Starts the client.
         /// </summary>
         /// <exception cref="InvalidOperationException">Is thrown if the client has already been instantiated and started.</exception>
         public void Start()
@@ -139,7 +122,7 @@ namespace NetworkLib.Client
         }
 
         /// <summary>
-        ///     Stops the client.
+        /// Stops the client.
         /// </summary>
         /// <exception cref="InvalidOperationException">Is thrown if the client has already been stopped.</exception>
         public void Stop()
@@ -155,7 +138,7 @@ namespace NetworkLib.Client
         }
 
         /// <summary>
-        ///     Sends given data to the server.
+        /// Sends given data to the server.
         /// </summary>
         /// <param name="data">Contains the data as a byte array.</param>
         public void SendToServer(byte[] data)
@@ -183,7 +166,7 @@ namespace NetworkLib.Client
         }
 
         /// <summary>
-        ///     Fires the <see cref="OnDataReceived"/> event if the client receives new data.
+        /// Fires the <see cref="OnDataReceived"/> event if the client receives new data.
         /// </summary>
         /// <param name="data">Contains the received data.</param>
         protected void FireOnDataReceived(byte[] data)
@@ -192,7 +175,7 @@ namespace NetworkLib.Client
         }
 
         /// <summary>
-        ///     Fires the <see cref="OnConnectionLost"/> event if the connection has been lost.
+        /// Fires the <see cref="OnConnectionLost"/> event if the connection has been lost.
         /// </summary>
         /// <param name="message">[Optional] The message info.</param>
         protected void FireOnConnectionLost(string message = "")
@@ -201,7 +184,7 @@ namespace NetworkLib.Client
         }
 
         /// <summary>
-        ///     Receives data from the connection between server and client.
+        /// Receives data from the connection between server and client.
         /// </summary>
         private void ReceiveData()
         {

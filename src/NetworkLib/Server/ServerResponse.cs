@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NetworkLib.Enums;
 
 namespace NetworkLib.Server
@@ -21,7 +22,7 @@ namespace NetworkLib.Server
         /// </summary>
         /// <param name="data">Contains the given data to be send to the clients.</param>
         /// <param name="type">Contains the <see cref="ResponseType"/>.</param>
-        public ServerResponse(byte[] data, ResponseType type)
+        public ServerResponse(IEnumerable<byte> data, ResponseType type)
         {
             Data = data;
             Type = type;
@@ -33,7 +34,7 @@ namespace NetworkLib.Server
         /// <value>
         ///     Contains information which is going to be sent to the clients.
         /// </value>
-        public byte[] Data { get; set; }
+        public IEnumerable<byte> Data { get; set; }
 
         /// <summary>
         /// Gets or sets the type.

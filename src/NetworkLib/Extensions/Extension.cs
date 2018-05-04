@@ -7,18 +7,16 @@ using NetworkLib.Logger;
 namespace NetworkLib.Extensions
 {
     /// <summary>
-    ///     Represents the <see cref="Extension"/> class.
-    ///     Contains extension for various types.
+    /// Represents the Extension class.
     /// </summary>
     public static class Extension
     {
         /// <summary>
-        ///     Receives data from a network stream.
-        ///     Receives the packet information without the header.
+        /// Receives data from a network stream.
         /// </summary>
         /// <param name="stream">Contains the given stream.</param>
         /// <returns>
-        ///     Returns the received packet data.
+        /// Returns the received packet data.
         /// </returns>
         /// <exception cref="InvalidOperationException">Is thrown if the header information is unequal the reserved length.</exception>
         public static byte[] ReceivePacketDataFrom(this NetworkStream stream)

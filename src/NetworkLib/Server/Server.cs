@@ -10,24 +10,24 @@ using NetworkLib.Events;
 namespace NetworkLib.Server
 {
     /// <summary>
-    ///     Represents the <see cref="Server"/> class.
+    /// Represents the <see cref="Server"/> class.
     /// </summary>
     public class Server
     {
         /// <summary>
-        ///     Represents the <see cref="TcpListener"/> server listener.
+        /// Represents the <see cref="TcpListener"/> server listener.
         /// </summary>
         private TcpListener _listener;
 
         /// <summary>
-        ///     Represents the <see cref="IPEndPoint"/> server's IP end point.
+        /// Represents the <see cref="IPEndPoint"/> server's IP end point.
         /// </summary>
         private readonly IPEndPoint _ep;
 
         /// <summary>
-        ///     Represents the connection port.
+        /// Represents the connection port.
         /// </summary>
-        private int _port;
+        private readonly int _port;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Server"/> class.
@@ -42,39 +42,33 @@ namespace NetworkLib.Server
         }
 
         /// <summary>
-        ///     Represents the <see cref="NewClientConnectedEventArgs"/>.
+        /// Represents the <see cref="NewClientConnectedEventArgs"/>.
         /// </summary>
         public event EventHandler<NewClientConnectedEventArgs> OnClientConnected;
 
         /// <summary>
-        ///     Represents the <see cref="ClientDisconnectedEventArgs"/>.
+        /// Represents the <see cref="ClientDisconnectedEventArgs"/>.
         /// </summary>
         public event EventHandler<ClientDisconnectedEventArgs> OnClientDisconnected;
 
         /// <summary>
-        ///     Represents the <see cref="ClientRequestReceivedEventArgs"/>.
+        /// Represents the <see cref="ClientRequestReceivedEventArgs"/>.
         /// </summary>
         public event EventHandler<ClientRequestReceivedEventArgs> OnClientRequestReceived;
 
         /// <summary>
-        ///     Represents the <see cref="ConnectionLostEventArgs"/>.
+        /// Represents the <see cref="ConnectionLostEventArgs"/>.
         /// </summary>
         public event EventHandler<ConnectionLostEventArgs> OnConnectionLost;
 
         /// <summary>
         /// Gets a value indicating whether the server is active or not.
         /// </summary>
-        /// <value>
-        ///   Is true if the server is active.
-        /// </value>
         public bool IsActive { get; private set; }
 
         /// <summary>
         /// Gets the connected clients.
         /// </summary>
-        /// <value>
-        ///     A list represented by <see cref="NetworkLib.Client"/>.
-        /// </value>
         public List<Client.Client> ConnectedClients { get; private set; }
 
         /// <summary>
@@ -85,13 +79,10 @@ namespace NetworkLib.Server
         /// <summary>
         /// Gets the port.
         /// </summary>
-        /// <value>
-        ///     Contains the value of the port.
-        /// </value>
         public int Port => _port;
 
         /// <summary>
-        ///     Starts the server.
+        /// Starts the server.
         /// </summary>
         /// <exception cref="InvalidOperationException">Is thrown if the server has already been instantiated and started.</exception>
         public void Start()
@@ -109,7 +100,7 @@ namespace NetworkLib.Server
         }
 
         /// <summary>
-        ///     Stops the server.
+        /// Stops the server.
         /// </summary>
         /// <exception cref="InvalidOperationException">Is thrown if the server has already been stopped.</exception>
         public void Stop()
@@ -124,7 +115,7 @@ namespace NetworkLib.Server
         }
 
         /// <summary>
-        ///     Sends the proceeded data back to all connected clients.
+        /// Sends the proceeded data back to all connected clients.
         /// </summary>
         /// <param name="data">Contains the to send data.</param>
         public void SendBackToClient(byte[] data)
@@ -139,12 +130,18 @@ namespace NetworkLib.Server
                     }
                 }
             }
-            catch (ObjectDisposedException) { }
-            catch (IOException) { }
+            catch (ObjectDisposedException)
+            {
+                Logger.Log.Start($"Exception {nameof(ObjectDisposedException)}: has been thrown in {nameof(SendBackToClient)} method");
+            }
+            catch (IOException)
+            {
+                Logger.Log.Start($"Exception {nameof(IOException)}: has been thrown in {nameof(SendBackToClient)} method");
+            }
         }
 
         /// <summary>
-        ///     Fires the <see cref="OnClientConnected"/> event if a new client has been connected.
+        /// Fires the <see cref="OnClientConnected"/> event if a new client has been connected.
         /// </summary>
         /// <param name="c">Contains the new connected client.</param>
         protected void FireOnClientConnected(Client.Client c)
@@ -153,7 +150,7 @@ namespace NetworkLib.Server
         }
 
         /// <summary>
-        ///     Fires the <see cref="OnClientDisconnected"/> event if a client has been disconnected.
+        /// Fires the <see cref="OnClientDisconnected"/> event if a client has been disconnected.
         /// </summary>
         /// <param name="c">Contains the disconnected client.</param>
         protected void FireOnClientDisconnected(Client.Client c)
@@ -162,17 +159,17 @@ namespace NetworkLib.Server
         }
 
         /// <summary>
-        ///     Fires the <see cref="OnClientRequestReceived"/> event if the server has received the client's request.
+        /// Fires the <see cref="OnClientRequestReceived"/> event if the server has received the client's request.
         /// </summary>
         /// <param name="cr">Contains the client's request.</param>
         /// <param name="sender">Contains the client who has sent the request.</param>
-        protected void FireOnClientRequestReceived(byte[] cr, Client.Client sender)
+        protected void FireOnClientRequestReceived(IEnumerable<byte> cr, Client.Client sender)
         {
             OnClientRequestReceived?.Invoke(this, new ClientRequestReceivedEventArgs(cr, sender));
         }
 
         /// <summary>
-        ///     Fires the <see cref="OnConnectionLost"/> event if the connection has been lost.
+        /// Fires the <see cref="OnConnectionLost"/> event if the connection has been lost.
         /// </summary>
         /// <param name="message">[Optional] The message info.</param>
         protected void FireOnConnectionLost(string message = "")
@@ -181,7 +178,7 @@ namespace NetworkLib.Server
         }
 
         /// <summary>
-        ///     Listens over the network for incoming data.
+        /// sListens over the network for incoming data.
         /// </summary>
         private void Listen()
         {
@@ -201,13 +198,13 @@ namespace NetworkLib.Server
                 catch (SocketException)
                 {
                     IsActive = false;
-                    FireOnConnectionLost("[Socket exception encountered]");
+                    FireOnConnectionLost("Socket exception encountered");
                 }
             }).Start();
         }
 
         /// <summary>
-        ///     Callback method for <see cref="NetworkLib.Client.OnDataReceived"/> event: is called if the server receives data from the client.
+        /// Is called if the server receives data from the client.
         /// </summary>
         /// <param name="sender">Contains the given sender.</param>
         /// <param name="e">The <see cref="ClientDataReceivedEventArgs"/> instance containing the event data.</param>
@@ -215,11 +212,14 @@ namespace NetworkLib.Server
         {
             try
             {
-                var cc = (Client.Client)sender;
+                var cc = (Client.Client) sender;
 
                 FireOnClientRequestReceived(e.Data, cc);
             }
-            catch (InvalidCastException) { }
+            catch (InvalidCastException)
+            {
+                Logger.Log.Start($"Exception {nameof(InvalidCastException)}: has been thrown in {nameof(ClientOnDataReceived)} callback method.");
+            }
         }
     }
 }

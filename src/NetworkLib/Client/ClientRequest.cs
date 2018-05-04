@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NetworkLib.Enums;
 
 namespace NetworkLib.Client
@@ -21,7 +22,7 @@ namespace NetworkLib.Client
         /// </summary>
         /// <param name="rawData">Contains the data which is sent to the server.</param>
         /// <param name="type">Contains the <see cref="RequestType"/>.</param>
-        public ClientRequest(byte[] rawData, RequestType type)
+        public ClientRequest(IEnumerable<byte> rawData, RequestType type)
         {
             Data = rawData;
             Type = type;
@@ -33,7 +34,7 @@ namespace NetworkLib.Client
         /// <value>
         ///     Contains the data.
         /// </value>
-        public byte[] Data { get; set; }
+        public IEnumerable<byte> Data { get; set; }
 
         /// <summary>
         /// Gets or sets the type.

@@ -2,10 +2,11 @@
 
 namespace NetworkLib.Server
 {
+    /// <inheritdoc />
     /// <summary>
-    ///     Represents the <see cref="NewClientConnectedEventArgs"/> class.
+    ///     Represents the <see cref="T:NetworkLib.Server.NewClientConnectedEventArgs" /> class.
     /// </summary>
-    /// <seealso cref="System.EventArgs" />
+    /// <seealso cref="T:System.EventArgs" />
     public class NewClientConnectedEventArgs : EventArgs
     {
         private readonly Client.Client _newClient;
