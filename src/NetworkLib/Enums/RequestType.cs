@@ -1,7 +1,7 @@
 ﻿namespace NetworkLib.Enums
 {
     /// <summary>
-    ///     Represents the <see cref="RequestType"/> enumeration.
+    /// Represents the RequestType enumeration.
     /// </summary>
     public enum RequestType
     {

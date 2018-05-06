@@ -9,6 +9,8 @@ namespace NetworkLib.Packet
     /// </summary>
     public static class Packet
     {
+        // Todo: Create customizable packet.
+
         /// <summary>
         /// Generates the packet data.
         /// Contains the header information and the packet itself.

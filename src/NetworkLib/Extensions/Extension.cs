@@ -14,14 +14,16 @@ namespace NetworkLib.Extensions
         /// <summary>
         /// Receives data from a network stream.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Is thrown if the header information is unequal the reserved length.</exception>
         /// <param name="stream">Contains the given stream.</param>
         /// <returns>
         /// Returns the received packet data.
         /// </returns>
-        /// <exception cref="InvalidOperationException">Is thrown if the header information is unequal the reserved length.</exception>
         public static byte[] ReceivePacketDataFrom(this NetworkStream stream)
         {
             var tmpData = new List<byte>();
+
+            // Todo: replace header length.
             var data = new byte[4];
 
             if (stream.Read(data, 0, data.Length) != 4)
@@ -48,9 +50,6 @@ namespace NetworkLib.Extensions
         /// Gets the string from the received bytes.
         /// Uses ASCII for encoding.
         /// </summary>
-        /// <exception cref="ArgumentException">Is thrown when the argument passed to this method is not valid.</exception>
-        /// <exception cref="ArgumentNullException">Is thrown when a null reference is passed.</exception>
-        /// <exception cref="DecoderFallbackException"></exception>
         /// <param name="data">The bytes.</param>
         /// <returns>
         /// Returns the encoded string.

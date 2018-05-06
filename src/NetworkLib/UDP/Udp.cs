@@ -5,27 +5,27 @@ using System.Net.Sockets;
 namespace NetworkLib.UDP
 {
     /// <summary>
-    /// Represents the <see cref="Udp"/> class.
+    /// Represents theUd class.
     /// Provides user datagram protocol network services.
     /// </summary>
     public class Udp
     {
         /// <summary>
-        /// Represents the <see cref="UdpClient"/> client.
+        /// Represents the UdpClient client.
         /// </summary>
         private readonly UdpClient _udpClient;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Udp"/> class.
+        /// Initializes a new instance of the Udp class.
         /// </summary>
-        /// <param name="ep">Contains the given <see cref="IPEndPoint"/>.</param>
+        /// <param name="ep">The IP end point.</param>
         public Udp(IPEndPoint ep)
         {
             _udpClient = new UdpClient(ep);
         }
 
         /// <summary>
-        /// Represents the <see cref="EndPointReceivedEventArgs"/> event.
+        /// Represents the EndPointReceivedEventArgs event.
         /// </summary>
         public event EventHandler<EndPointReceivedEventArgs> OnEndPointReceived;
 
@@ -57,7 +57,7 @@ namespace NetworkLib.UDP
         }
 
         /// <summary>
-        /// Fires the <see cref="OnEndPointReceived"/> event, if a new IP end point has been received.
+        /// OnEndPointReceived event is fired, if a new IP end point has been received.
         /// </summary>
         /// <param name="ep">Contains the received IP end point.</param>
         protected void FireOnEndPointReceived(IPEndPoint ep)
@@ -68,7 +68,7 @@ namespace NetworkLib.UDP
         /// <summary>
         /// Receives data asynchronously from a remote host.
         /// </summary>
-        /// <param name="ar">Contains the given <see cref="IAsyncResult"/>.</param>
+        /// <param name="ar">The IAsyncResult.</param>
         private void ReceiveData(IAsyncResult ar)
         {
             var endPoint = new IPEndPoint(IPAddress.Any, 0);

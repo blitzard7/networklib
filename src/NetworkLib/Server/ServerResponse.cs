@@ -5,7 +5,7 @@ using NetworkLib.Enums;
 namespace NetworkLib.Server
 {
     /// <summary>
-    ///     Represents the <see cref="ServerResponse"/> class.
+    /// Represents the ServerResponse class.
     /// </summary>
     [Serializable]
     public class ServerResponse
@@ -31,17 +31,11 @@ namespace NetworkLib.Server
         /// <summary>
         /// Gets or sets the data.
         /// </summary>
-        /// <value>
-        ///     Contains information which is going to be sent to the clients.
-        /// </value>
         public IEnumerable<byte> Data { get; set; }
 
         /// <summary>
         /// Gets or sets the type.
         /// </summary>
-        /// <value>
-        ///     Contains the <see cref="ResponseType"/>.
-        /// </value>
         public ResponseType Type { get; set; }
     }
 }

@@ -10,12 +10,12 @@ using NetworkLib.Logger;
 namespace NetworkLib.Client
 {
     /// <summary>
-    /// Represents the <see cref="Client"/> class.
+    /// Represents the Client class.
     /// </summary>
     public class Client
     {
         /// <summary>
-        /// Represents the <see cref="TcpClient"/> client.
+        /// Represents the tcp client.
         /// </summary>
         private TcpClient _client;
 
@@ -35,7 +35,7 @@ namespace NetworkLib.Client
         private readonly int _port;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Client"/> class.
+        /// Initializes a new instance of the Client class.
         /// </summary>
         /// <param name="ip">Contains the given IP address.</param>
         /// <param name="port">Possible given port. Default is set to 5000.</param>
@@ -46,7 +46,7 @@ namespace NetworkLib.Client
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Client"/> class.
+        /// Initializes a new instance of the Client class.
         /// </summary>
         /// <param name="client">Contains the given client.</param>
         public Client(TcpClient client)
@@ -58,12 +58,12 @@ namespace NetworkLib.Client
         }
 
         /// <summary>
-        /// Represents the <see cref="ClientDataReceivedEventArgs"/>.
+        /// Represents the ClientDataReceivedEventArgs.
         /// </summary>
         public event EventHandler<ClientDataReceivedEventArgs> OnDataReceived;
 
         /// <summary>
-        /// Represents the <see cref="ConnectionLostEventArgs"/>.
+        /// Represents the ConnectionLostEventArgs.
         /// </summary>
         public event EventHandler<ConnectionLostEventArgs> OnConnectionLost;
 
@@ -82,10 +82,7 @@ namespace NetworkLib.Client
         /// </summary>
         public IPAddress Ip => ((IPEndPoint)_client.Client.RemoteEndPoint).Address;
 
-        /// <summary>
-        /// Gets the stream.
-        /// </summary>
-        public NetworkStream Stream => _stream;
+        internal NetworkStream Stream => _stream;
 
         /// <summary>
         /// Starts the client.
@@ -95,7 +92,7 @@ namespace NetworkLib.Client
         {
             if (IsActive)
             {
-                throw new InvalidOperationException("Client is already running.");
+                throw new InvalidOperationException("Client has been already started.");
             }
 
             try
@@ -107,17 +104,19 @@ namespace NetworkLib.Client
 
                 ReceiveData();
             }
-            catch (SocketException)
+            catch (SocketException e)
             {
                 IsActive = false;
-                FireOnConnectionLost("[Can't connect to server]");
-                Log.Start("Stream has been disposed.");
+                FireOnConnectionLost($"Exception {nameof(e)} has been encountered while connecting to server.");
+                Log.Start($"Exception {nameof(e)}:\n" +
+                          $"{e.StackTrace}");
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException e)
             {
                 IsActive = false;
-                FireOnConnectionLost("[Stream disposed]");
-                Log.Start("Stream has been disposed.");
+                FireOnConnectionLost($"Exception {nameof(e)} has been encountered while connecting to server.");
+                Log.Start($"Exception {nameof(e)}:\n" +
+                          $"{e.StackTrace}");
             }
         }
 
@@ -129,7 +128,6 @@ namespace NetworkLib.Client
         {
             if (!IsActive)
             {
-                Log.Start($"Throwing exception: {nameof(InvalidOperationException)}. Client has already been stopped!");
                 throw new InvalidOperationException("Client has already been stopped!");
             }
 
@@ -151,17 +149,19 @@ namespace NetworkLib.Client
                           $"Writing packet into stream.");
                 _stream.Write(packet, 0, packet.Length);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException e)
             {
                 IsActive = false;
-                FireOnConnectionLost("[Stream disposed]");
-                Log.Start("Stream has been disposed.");
+                FireOnConnectionLost($"Exception {nameof(e)}, object has been disposed.");
+                Log.Start($"Exception {nameof(e)}:\n" +
+                          $"{e.StackTrace}");
             }
-            catch (IOException)
+            catch (IOException e)
             {
                 IsActive = false;
-                FireOnConnectionLost("[Connection to remote endpoint lost]");
-                Log.Start("Stream has been disposed.");
+                FireOnConnectionLost($"Exception {nameof(e)} encountered.");
+                Log.Start($"Exception {nameof(e)}:\n" +
+                          $"{e.StackTrace}");
             }
         }
 
@@ -199,17 +199,19 @@ namespace NetworkLib.Client
                         Log.Start($"Received {data.Length} amount on data.");
                     }
                 }
-                catch (ObjectDisposedException)
+                catch (ObjectDisposedException e)
                 {
                     IsActive = false;
-                    FireOnConnectionLost("[Stream disposed]");
-                    Log.Start("Stream has been disposed.");
+                    FireOnConnectionLost($"Exception {nameof(e)}, object has been disposed.");
+                    Log.Start($"Exception {nameof(e)}:\n" +
+                              $"{e.StackTrace}");
                 }
-                catch (IOException)
+                catch (IOException e)
                 {
                     IsActive = false;
-                    FireOnConnectionLost("[Connection to remote endpoint lost]");
-                    Log.Start("Connection to remote endpoint lost.");
+                    FireOnConnectionLost($"Exception {nameof(e)} encountered. Connection to remote endpoint lost.");
+                    Log.Start($"Exception {nameof(e)}:\n" +
+                              $"{e.StackTrace}");
                 }
             }).Start();
         }

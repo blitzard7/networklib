@@ -6,21 +6,22 @@ using System.Net.Sockets;
 using System.Threading;
 using NetworkLib.Client;
 using NetworkLib.Events;
+using NetworkLib.Logger;
 
 namespace NetworkLib.Server
 {
     /// <summary>
-    /// Represents the <see cref="Server"/> class.
+    /// Represents the Server class.
     /// </summary>
     public class Server
     {
         /// <summary>
-        /// Represents the <see cref="TcpListener"/> server listener.
+        /// Represents the server listener.
         /// </summary>
         private TcpListener _listener;
 
         /// <summary>
-        /// Represents the <see cref="IPEndPoint"/> server's IP end point.
+        /// Represents the server's IP end point.
         /// </summary>
         private readonly IPEndPoint _ep;
 
@@ -30,7 +31,7 @@ namespace NetworkLib.Server
         private readonly int _port;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Server"/> class.
+        /// Initializes a new instance of the Server class.
         /// </summary>
         /// <param name="ip">Contains the given IP address.</param>
         /// <param name="port">Possible given port. Default is set to 5000.</param>
@@ -42,22 +43,22 @@ namespace NetworkLib.Server
         }
 
         /// <summary>
-        /// Represents the <see cref="NewClientConnectedEventArgs"/>.
+        /// Represents the NewClientConnectedEventArgs.
         /// </summary>
         public event EventHandler<NewClientConnectedEventArgs> OnClientConnected;
 
         /// <summary>
-        /// Represents the <see cref="ClientDisconnectedEventArgs"/>.
+        /// Represents the ClientDisconnectedEventArgs.
         /// </summary>
         public event EventHandler<ClientDisconnectedEventArgs> OnClientDisconnected;
 
         /// <summary>
-        /// Represents the <see cref="ClientRequestReceivedEventArgs"/>.
+        /// Represents the ClientRequestReceivedEventArgs.
         /// </summary>
         public event EventHandler<ClientRequestReceivedEventArgs> OnClientRequestReceived;
 
         /// <summary>
-        /// Represents the <see cref="ConnectionLostEventArgs"/>.
+        /// Represents the ConnectionLostEventArgs.
         /// </summary>
         public event EventHandler<ConnectionLostEventArgs> OnConnectionLost;
 
@@ -69,7 +70,7 @@ namespace NetworkLib.Server
         /// <summary>
         /// Gets the connected clients.
         /// </summary>
-        public List<Client.Client> ConnectedClients { get; private set; }
+        public List<Client.Client> ConnectedClients { get; }
 
         /// <summary>
         /// Gets the IP address.
@@ -132,11 +133,11 @@ namespace NetworkLib.Server
             }
             catch (ObjectDisposedException)
             {
-                Logger.Log.Start($"Exception {nameof(ObjectDisposedException)}: has been thrown in {nameof(SendBackToClient)} method");
+                Log.Start($"Exception {nameof(ObjectDisposedException)}: has been thrown in {nameof(SendBackToClient)} method");
             }
             catch (IOException)
             {
-                Logger.Log.Start($"Exception {nameof(IOException)}: has been thrown in {nameof(SendBackToClient)} method");
+                Log.Start($"Exception {nameof(IOException)}: has been thrown in {nameof(SendBackToClient)} method");
             }
         }
 
@@ -195,10 +196,12 @@ namespace NetworkLib.Server
                         FireOnClientConnected(cc);
                     }
                 }
-                catch (SocketException)
+                catch (SocketException e)
                 {
                     IsActive = false;
                     FireOnConnectionLost("Socket exception encountered");
+                    Log.Start($"Exception {nameof(e)}:\n" +
+                              $"{e.StackTrace}");
                 }
             }).Start();
         }
@@ -213,12 +216,12 @@ namespace NetworkLib.Server
             try
             {
                 var cc = (Client.Client) sender;
-
                 FireOnClientRequestReceived(e.Data, cc);
             }
-            catch (InvalidCastException)
+            catch (InvalidCastException ex)
             {
-                Logger.Log.Start($"Exception {nameof(InvalidCastException)}: has been thrown in {nameof(ClientOnDataReceived)} callback method.");
+                Log.Start($"Exception {nameof(ex)}:\n" +
+                          $"{ex.StackTrace}");
             }
         }
     }

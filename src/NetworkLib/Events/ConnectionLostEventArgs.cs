@@ -2,10 +2,14 @@
 
 namespace NetworkLib.Events
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// Represents the ConnectionLostEventArgs class.
+    /// </summary>
     public class ConnectionLostEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectionLostEventArgs"/> class.
+        /// Initializes a new instance of the ConnectionLostEventArgs class.
         /// </summary>
         /// <param name="message">Contains the lost connection info message.</param>
         public ConnectionLostEventArgs(string message = "")
@@ -16,9 +20,6 @@ namespace NetworkLib.Events
         /// <summary>
         /// Gets the info message.
         /// </summary>
-        /// <value>
-        ///     Contains the reason for the lost connection.
-        /// </value>
-        public string Message { get; private set; }
+        public string Message { get; }
     }
 }
