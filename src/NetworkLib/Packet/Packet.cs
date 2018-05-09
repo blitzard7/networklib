@@ -9,7 +9,11 @@ namespace NetworkLib.Packet
     /// </summary>
     public static class Packet
     {
-        // Todo: Create customizable packet.
+        /*
+         * Todo: Packet refactoring
+         * - Create customizable packet.
+         * - Change GeneratePacket method signature.
+         */
 
         /// <summary>
         /// Generates the packet data.

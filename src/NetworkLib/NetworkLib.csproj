@@ -40,8 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\PacketAttribute.cs" />
+    <Compile Include="Attributes\PacketLengthAttribute.cs" />
     <Compile Include="Client\ClientRequest.cs" />
     <Compile Include="Events\ConnectionLostEventArgs.cs" />
+    <Compile Include="Helper\AttributesReader.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="UDP\EndPointReceivedEventArgs.cs" />
     <Compile Include="Extensions\Extension.cs" />
