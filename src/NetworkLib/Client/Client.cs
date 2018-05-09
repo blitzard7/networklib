@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using NetworkLib.Contracts;
 using NetworkLib.Events;
 using NetworkLib.Extensions;
 using NetworkLib.Logger;
@@ -13,7 +15,7 @@ namespace NetworkLib.Client
     /// <summary>
     /// Represents the Client class.
     /// </summary>
-    public class Client
+    public class Client : IClient
     {
         /// <summary>
         /// Represents the tcp client.
@@ -135,13 +137,14 @@ namespace NetworkLib.Client
         /// Sends given data to the server.
         /// </summary>
         /// <param name="data">Contains the data as a byte array.</param>
-        public void SendToServer(byte[] data)
+        public void SendToServer(IEnumerable<byte> data)
         {
             try
             {
-                var packet = Packet.Packet.GeneratePacket(data);
+                var tmpData = data.ToArray();
+                var packet = Packet.Packet.GeneratePacket(tmpData);
 
-                Log.Start($"Packet successfully generated for {data.Length} amount on bytes." +
+                Log.Start($"Packet successfully generated for {tmpData.Length} amount on bytes." +
                           "Writing packet into stream.");
                 _stream.Write(packet, 0, packet.Length);
             }

@@ -43,6 +43,8 @@
     <Compile Include="Attributes\PacketAttribute.cs" />
     <Compile Include="Attributes\PacketLengthAttribute.cs" />
     <Compile Include="Client\ClientRequest.cs" />
+    <Compile Include="Contracts\IClient.cs" />
+    <Compile Include="Contracts\IServer.cs" />
     <Compile Include="Events\ConnectionLostEventArgs.cs" />
     <Compile Include="Helper\AssemblyReader.cs" />
     <Compile Include="Helper\AttributesReader.cs" />
@@ -62,7 +64,8 @@
     <Compile Include="Client\ClientDataReceivedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UDP\Udp.cs" />
+    <Compile Include="Wrapper\AsyncServer.cs" />
+    <Compile Include="Wrapper\ServerDecorator.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

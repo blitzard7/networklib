@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using NetworkLib.Client;
+using NetworkLib.Contracts;
 using NetworkLib.Events;
 using NetworkLib.Logger;
 
@@ -13,7 +15,7 @@ namespace NetworkLib.Server
     /// <summary>
     /// Represents the Server class.
     /// </summary>
-    public class Server
+    public class Server : IServer
     {
         /// <summary>
         /// Represents the server listener.
@@ -114,30 +116,30 @@ namespace NetworkLib.Server
             _listener.Stop();
             IsActive = false;
         }
-
         /// <summary>
         /// Sends the proceeded data back to all connected clients.
         /// </summary>
-        /// <param name="data">Contains the to send data.</param>
-        public void SendBackToClient(byte[] data)
+        /// <param name="data">The data.</param>
+        public void SendToClient(IEnumerable<byte> data)
         {
             try
             {
+                var tmpData = data.ToArray();
                 foreach (var cc in ConnectedClients)
                 {
                     if (cc.IsActive)
                     {
-                        cc.Stream.Write(data, 0, data.Length);
+                        cc.Stream.Write(tmpData, 0, tmpData.Length);
                     }
                 }
             }
             catch (ObjectDisposedException)
             {
-                Log.Start($"Exception {nameof(ObjectDisposedException)}: has been thrown in {nameof(SendBackToClient)} method");
+                Log.Start($"Exception {nameof(ObjectDisposedException)}: has been thrown in {nameof(SendToClient)} method");
             }
             catch (IOException)
             {
-                Log.Start($"Exception {nameof(IOException)}: has been thrown in {nameof(SendBackToClient)} method");
+                Log.Start($"Exception {nameof(IOException)}: has been thrown in {nameof(SendToClient)} method");
             }
         }
 

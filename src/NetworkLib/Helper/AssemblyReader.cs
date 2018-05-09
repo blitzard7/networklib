@@ -18,6 +18,9 @@ namespace NetworkLib.Helper
         /// </returns>
         private static Assembly GetEntryAssembly() => Assembly.GetEntryAssembly();
         
+        /// <summary>
+        /// Gets or sets the current assembly.
+        /// </summary>
         public static Assembly CurrentAssembly { get; set; }
 
         /// <summary>

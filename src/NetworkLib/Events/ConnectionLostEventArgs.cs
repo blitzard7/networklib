@@ -15,7 +15,7 @@ namespace NetworkLib.Events
         /// <param name="message">Contains the lost connection info message.</param>
         public ConnectionLostEventArgs(string message = "")
         {
-            this.Message = message;
+            Message = message;
         }
 
         /// <summary>
