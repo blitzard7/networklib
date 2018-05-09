@@ -44,7 +44,9 @@
     <Compile Include="Attributes\PacketLengthAttribute.cs" />
     <Compile Include="Client\ClientRequest.cs" />
     <Compile Include="Events\ConnectionLostEventArgs.cs" />
+    <Compile Include="Helper\AssemblyReader.cs" />
     <Compile Include="Helper\AttributesReader.cs" />
+    <Compile Include="Helper\Property.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="UDP\EndPointReceivedEventArgs.cs" />
     <Compile Include="Extensions\Extension.cs" />

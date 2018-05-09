@@ -14,6 +14,7 @@ namespace NetworkLib.Attributes
         /// </summary>
         private readonly int _length; 
 
+        /// <inheritdoc />
         /// <summary>
         /// Initializes a new instance of the PacketLengthAttribute class.
         /// </summary>

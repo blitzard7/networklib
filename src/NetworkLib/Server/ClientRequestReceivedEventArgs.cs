@@ -11,6 +11,7 @@ namespace NetworkLib.Server
     /// <seealso cref="T:System.EventArgs" />
     public class ClientRequestReceivedEventArgs : EventArgs
     {
+        /// <inheritdoc />
         /// <summary>
         /// Initializes a new instance of the ClientRequestReceivedEventArgs class.
         /// </summary>

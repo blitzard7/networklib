@@ -8,6 +8,7 @@ namespace NetworkLib.Events
     /// </summary>
     public class ConnectionLostEventArgs : EventArgs
     {
+        /// <inheritdoc />
         /// <summary>
         /// Initializes a new instance of the ConnectionLostEventArgs class.
         /// </summary>

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using NetworkLib.Logger;
 
@@ -62,6 +65,45 @@ namespace NetworkLib.Extensions
                 $"Method: {nameof(EncodeReceivedBytesAsString)} called. Encoded {data.Length} using {nameof(Encoding.ASCII)}.");
 
             return encodedData;
+        }
+
+        /// <summary>
+        /// Serializes an object into a byte array.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>
+        /// Returns the serializes byte array.
+        /// </returns>
+        public static IEnumerable<byte> ConvertToByte(this object obj)
+        {
+            if (obj == null) return null;
+
+            using (var ms = new MemoryStream())
+            {
+                var binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(ms, obj);
+
+                return ms.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Converts a byte array into an object.
+        /// </summary>
+        /// <param name="bytes">The byte array.</param>
+        /// <returns>
+        /// Returns the deserializes object.
+        /// </returns>
+        public static object ConvertToObject(this IEnumerable<byte> bytes)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var tmp = bytes.ToArray();
+                var binaryFormatter = new BinaryFormatter();
+                ms.Write(tmp, 0, tmp.Length);
+                ms.Seek(0, SeekOrigin.Begin);
+                return binaryFormatter.Deserialize(ms);
+            }
         }
     }
 }

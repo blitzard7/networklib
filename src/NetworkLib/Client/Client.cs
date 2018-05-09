@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -30,11 +31,6 @@ namespace NetworkLib.Client
         private readonly IPEndPoint _ep;
 
         /// <summary>
-        /// Represents the port.
-        /// </summary>
-        private readonly int _port;
-
-        /// <summary>
         /// Initializes a new instance of the Client class.
         /// </summary>
         /// <param name="ip">Contains the given IP address.</param>
@@ -42,7 +38,7 @@ namespace NetworkLib.Client
         public Client(IPAddress ip, int port = 5000)
         {
             _ep = new IPEndPoint(ip, port);
-            _port = port;
+            Port = port;
         }
 
         /// <summary>
@@ -70,12 +66,12 @@ namespace NetworkLib.Client
         /// <summary>
         /// Gets or sets a value indicating whether the client is active or not.
         /// </summary>
-        public bool IsActive { get; set; }
+        public bool IsActive { get; private set; }
 
         /// <summary>
         /// Gets the port.
         /// </summary>
-        public int Port => _port;
+        public int Port { get; private set; }
 
         /// <summary>
         /// Gets the client's IP address.
@@ -146,7 +142,7 @@ namespace NetworkLib.Client
                 var packet = Packet.Packet.GeneratePacket(data);
 
                 Log.Start($"Packet successfully generated for {data.Length} amount on bytes." +
-                          $"Writing packet into stream.");
+                          "Writing packet into stream.");
                 _stream.Write(packet, 0, packet.Length);
             }
             catch (ObjectDisposedException e)
@@ -169,7 +165,7 @@ namespace NetworkLib.Client
         /// Fires the <see cref="OnDataReceived"/> event if the client receives new data.
         /// </summary>
         /// <param name="data">Contains the received data.</param>
-        protected void FireOnDataReceived(byte[] data)
+        private void FireOnDataReceived(IEnumerable<byte> data)
         {
             OnDataReceived?.Invoke(this, new ClientDataReceivedEventArgs(data));
         }
@@ -178,7 +174,7 @@ namespace NetworkLib.Client
         /// Fires the <see cref="OnConnectionLost"/> event if the connection has been lost.
         /// </summary>
         /// <param name="message">[Optional] The message info.</param>
-        protected void FireOnConnectionLost(string message = "")
+        private void FireOnConnectionLost(string message = "")
         {
             OnConnectionLost?.Invoke(this, new ConnectionLostEventArgs(message));
         }

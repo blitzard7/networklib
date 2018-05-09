@@ -9,8 +9,9 @@ namespace NetworkLib.Server
     /// <seealso cref="T:System.EventArgs" />
     public class ClientDisconnectedEventArgs : EventArgs
     {
+        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientDisconnectedEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="T:NetworkLib.Server.ClientDisconnectedEventArgs" /> class.
         /// </summary>
         /// <param name="c">Contains the disconnected client.</param>
         public ClientDisconnectedEventArgs(Client.Client c)
