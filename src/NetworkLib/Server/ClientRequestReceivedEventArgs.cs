@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace NetworkLib.Server
 {
     /// <inheritdoc />
     /// <summary>
-    /// Represents the ClientRequestReceivedEventArgs class.
+    ///     Represents the ClientRequestReceivedEventArgs class.
     /// </summary>
     /// <seealso cref="T:System.EventArgs" />
     public class ClientRequestReceivedEventArgs : EventArgs
     {
         /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the ClientRequestReceivedEventArgs class.
+        ///     Initializes a new instance of the ClientRequestReceivedEventArgs class.
         /// </summary>
         /// <param name="cr">Contains the client's request.</param>
         /// <param name="sender">Contains the client who has sent the request.</param>
@@ -24,12 +23,12 @@ namespace NetworkLib.Server
         }
 
         /// <summary>
-        /// Gets the client request data.
+        ///     Gets the client request data.
         /// </summary>
         public IEnumerable<byte> ClientRequestData { get; }
 
         /// <summary>
-        /// Gets the sender.
+        ///     Gets the sender.
         /// </summary>
         public Client.Client Sender { get; }
     }

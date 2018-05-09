@@ -5,13 +5,13 @@ namespace NetworkLib.Client
 {
     /// <inheritdoc />
     /// <summary>
-    /// Represents the ClientDataReceivedEventArgs class.
+    ///     Represents the ClientDataReceivedEventArgs class.
     /// </summary>
     public class ClientDataReceivedEventArgs : EventArgs
     {
         /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the ClientDataReceivedEventArgs class.
+        ///     Initializes a new instance of the ClientDataReceivedEventArgs class.
         /// </summary>
         /// <param name="data">Contains the received data.</param>
         public ClientDataReceivedEventArgs(IEnumerable<byte> data)
@@ -20,7 +20,7 @@ namespace NetworkLib.Client
         }
 
         /// <summary>
-        /// Gets the data.
+        ///     Gets the data.
         /// </summary>
         public IEnumerable<byte> Data { get; }
     }

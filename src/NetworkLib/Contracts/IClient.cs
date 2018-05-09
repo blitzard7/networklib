@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using NetworkLib.Client;
-using NetworkLib.Events;
+﻿using System.Collections.Generic;
 
 namespace NetworkLib.Contracts
 {

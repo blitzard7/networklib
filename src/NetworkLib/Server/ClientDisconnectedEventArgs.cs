@@ -4,14 +4,14 @@ namespace NetworkLib.Server
 {
     /// <inheritdoc />
     /// <summary>
-    /// Represents the ClientDisconnectedEventArgs class.
+    ///     Represents the ClientDisconnectedEventArgs class.
     /// </summary>
     /// <seealso cref="T:System.EventArgs" />
     public class ClientDisconnectedEventArgs : EventArgs
     {
         /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:NetworkLib.Server.ClientDisconnectedEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="T:NetworkLib.Server.ClientDisconnectedEventArgs" /> class.
         /// </summary>
         /// <param name="c">Contains the disconnected client.</param>
         public ClientDisconnectedEventArgs(Client.Client c)
@@ -20,7 +20,7 @@ namespace NetworkLib.Server
         }
 
         /// <summary>
-        /// Gets the disconnected client.
+        ///     Gets the disconnected client.
         /// </summary>
         public Client.Client DisconnectedClient { get; }
     }
