@@ -22,7 +22,7 @@ var client = new Client(ip, port);
  var udp = new UDP(ep);
 // ep: represents an IPEndPoint.
 ```
-#
+
 ## Example
 ### Server
 
@@ -58,18 +58,4 @@ client.SendToServer(packet); // sending packet to server.
 ```cs
 var udp = new Udp(new IPEndPoint(IPAddress.Loopback, 7337));
 udp.OnEndPointReceived += UdpOnEndPointReceived; // callback for received end-point.
-```
-
-
-#
-## Contribute
-If you are interested on contributing please read [CONTRIBUTING.md](https://github.com/samantaSophia/networklib/blob/master/CONTRIBUTING.md)
-
-#
-## How to use it in your solution
-1. Download this repository and build it
-2. Add a reference to the built NetworkLib.dll in your solution
-3. Add the following using-statement to your project files:
-```cs
-using NetworkLib;
 ```
