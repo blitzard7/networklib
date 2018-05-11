@@ -59,30 +59,5 @@ namespace NetworkLib.Packet
 
             return data.ToArray();
         }
-
-        /// <summary>
-        ///     Collects the header information from the packet.
-        ///     The header information should contain the length of the packet.
-        /// </summary>
-        /// <param name="data">Contains the data.</param>
-        /// <returns>
-        ///     Returns the header information.
-        /// </returns>
-        public static byte[] CollectHeaderInformation(IEnumerable<byte> data)
-        {
-            return data.Take(4).ToArray();
-        }
-
-        /// <summary>
-        ///     Collects the packet information.
-        /// </summary>
-        /// <param name="data">Contains the packet.</param>
-        /// <returns>
-        ///     Returns only the packet information, without the header data.
-        /// </returns>
-        public static byte[] CollectPacketInformation(IEnumerable<byte> data)
-        {
-            return data.Skip(4).ToArray();
-        }
     }
 }

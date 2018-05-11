@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using NetworkLib.Attributes;
 
@@ -19,7 +20,7 @@ namespace NetworkLib.Helper
         /// <returns>
         ///     Returns a list containing the PropertyInfo.
         /// </returns>
-        internal static List<PropertyInfo> GetPropertiesWithPacketLengthAttribute(Type type)
+        internal static IEnumerable<PropertyInfo> GetPropertiesWithPacketLengthAttribute(Type type)
         {
             var propInfo = type.GetProperties();
             var propertiesContainingAttributes = new List<PropertyInfo>();
@@ -32,26 +33,6 @@ namespace NetworkLib.Helper
             }
 
             return propertiesContainingAttributes;
-        }
-
-        /// <summary>
-        ///     Gets the properties containing the PacketLengthAttribute.
-        /// </summary>
-        /// <returns>
-        ///     Returns a list of Property containing the property info and the class where the property is located.
-        /// </returns>
-        public static IEnumerable<Property> GetProperties()
-        {
-            var types = AssemblyReader.GetAssemblyClasses();
-            var props = new List<Property>();
-
-            foreach (var type in types)
-            {
-                var properties = GetPropertiesWithPacketLengthAttribute(type);
-                properties.ForEach(x => { props.Add(new Property {ProptertyInfo = x, ClassContainingProp = type}); });
-            }
-
-            return props;
         }
 
         /// <summary>
@@ -69,7 +50,7 @@ namespace NetworkLib.Helper
                 var serializableAtt = Attribute.GetCustomAttribute(member, typeof(SerializableAttribute));
                 var hasPacketAndSerializbaleAttribute = packetAtt != null && serializableAtt != null;
 
-                if (!hasPacketAndSerializbaleAttribute) return null;
+                if (!hasPacketAndSerializbaleAttribute) return new List<MemberInfo>();
                 classes.Add(member);
             }
 

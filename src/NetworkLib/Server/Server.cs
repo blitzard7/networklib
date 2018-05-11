@@ -23,11 +23,6 @@ namespace NetworkLib.Server
         private readonly IPEndPoint _ep;
 
         /// <summary>
-        ///     Represents the connection port.
-        /// </summary>
-        private readonly int _port;
-
-        /// <summary>
         ///     Represents the server listener.
         /// </summary>
         private TcpListener _listener;
@@ -40,7 +35,7 @@ namespace NetworkLib.Server
         public Server(IPAddress ip, int port = 5000)
         {
             _ep = new IPEndPoint(ip, port);
-            _port = port;
+            Port = port;
             ConnectedClients = new List<Client.Client>();
         }
 
@@ -62,7 +57,7 @@ namespace NetworkLib.Server
         /// <summary>
         ///     Gets the port.
         /// </summary>
-        public int Port => _port;
+        public int Port { get; }
 
         /// <summary>
         ///     Starts the server.

@@ -27,7 +27,7 @@ namespace NetworkLib.Logger
             }
             finally
             {
-                fs.Dispose();
+                fs?.Dispose();
             }
         }
     }

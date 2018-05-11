@@ -58,7 +58,6 @@ namespace NetworkLib.Extensions
         public static string EncodeReceivedBytesAsString(this byte[] data)
         {
             var encodedData = Encoding.ASCII.GetString(data);
-
             Log.Start(
                 $"Method: {nameof(EncodeReceivedBytesAsString)} called. Encoded {data.Length} using {nameof(Encoding.ASCII)}.");
 
@@ -74,7 +73,7 @@ namespace NetworkLib.Extensions
         /// </returns>
         public static IEnumerable<byte> ConvertToByte(this object obj)
         {
-            if (obj == null) return null;
+            if (obj == null) return Array.Empty<byte>();
 
             using (var ms = new MemoryStream())
             {

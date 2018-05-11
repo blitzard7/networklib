@@ -21,10 +21,7 @@ namespace NetworkLib.Helper
         /// <returns>
         ///     Returns the entry assembly.
         /// </returns>
-        private static Assembly GetEntryAssembly()
-        {
-            return Assembly.GetEntryAssembly();
-        }
+        private static Assembly GetEntryAssembly() => Assembly.GetEntryAssembly();
 
         /// <summary>
         ///     Gets all the classes from the given assembly.
@@ -47,10 +44,8 @@ namespace NetworkLib.Helper
         /// <returns>
         ///     Returns an IEnumerable of PropertyInfo.
         /// </returns>
-        private static IEnumerable<PropertyInfo> GetPropertiesFromClasses(Type type)
-        {
-            return AttributesReader.GetPropertiesWithPacketLengthAttribute(type);
-        }
+        private static IEnumerable<PropertyInfo> GetPropertiesFromClasses(Type type) =>
+            AttributesReader.GetPropertiesWithPacketLengthAttribute(type);
 
         /// <summary>
         ///     Gets all values from the properties of a specified type.
