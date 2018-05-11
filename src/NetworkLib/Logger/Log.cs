@@ -4,16 +4,16 @@ using System.IO;
 namespace NetworkLib.Logger
 {
     /// <summary>
-    /// Represents the <see cref="Log" /> class.
-    /// Logs each event that happens into a .txt file for further information.
+    ///     Represents the <see cref="Log" /> class.
+    ///     Logs each event that happens into a .txt file for further information.
     /// </summary>
     public static class Log
     {
-        private static readonly string LoggingPath = Environment.ExpandEnvironmentVariables(@"%AppData%\");
         private const string FileName = "Network_Log";
+        private static readonly string LoggingPath = Environment.ExpandEnvironmentVariables(@"%AppData%\");
 
         /// <summary>
-        /// Starts logging.
+        ///     Starts logging.
         /// </summary>
         public static void Start(string message)
         {
@@ -27,7 +27,7 @@ namespace NetworkLib.Logger
             }
             finally
             {
-                fs.Dispose();
+                fs?.Dispose();
             }
         }
     }

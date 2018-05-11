@@ -3,24 +3,22 @@
 namespace NetworkLib.UDP
 {
     /// <summary>
-    /// Represents the EndPointReceivedEventArgs class.
+    ///     Represents the EndPointReceivedEventArgs class.
     /// </summary>
     public class EndPointReceivedEventArgs
     {
-        private readonly IPEndPoint _ep;
-
         /// <summary>
-        /// Initializes a new instance of the EndPointReceivedEventArgs class.
+        ///     Initializes a new instance of the EndPointReceivedEventArgs class.
         /// </summary>
         /// <param name="ep">The IP end point.</param>
         public EndPointReceivedEventArgs(IPEndPoint ep)
         {
-            _ep = ep;
+            Ep = ep;
         }
 
         /// <summary>
-        /// Gets the IP end point.
+        ///     Gets the IP end point.
         /// </summary>
-        public IPEndPoint Ep => _ep;
+        public IPEndPoint Ep { get; }
     }
 }

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using NetworkLib.Contracts;
 using NetworkLib.Events;
 using NetworkLib.Extensions;
 using NetworkLib.Logger;
@@ -10,43 +13,38 @@ using NetworkLib.Logger;
 namespace NetworkLib.Client
 {
     /// <summary>
-    /// Represents the Client class.
+    ///     Represents the Client class.
     /// </summary>
-    public class Client
+    public class Client : IClient
     {
         /// <summary>
-        /// Represents the tcp client.
-        /// </summary>
-        private TcpClient _client;
-
-        /// <summary>
-        /// Represents the client's network stream.
-        /// </summary>
-        private NetworkStream _stream;
-
-        /// <summary>
-        /// Represents the client's IP end point.
+        ///     Represents the client's IP end point.
         /// </summary>
         private readonly IPEndPoint _ep;
 
         /// <summary>
-        /// Represents the port.
+        ///     Represents the tcp client.
         /// </summary>
-        private readonly int _port;
+        private TcpClient _client;
 
         /// <summary>
-        /// Initializes a new instance of the Client class.
+        ///     Represents the client's network stream.
+        /// </summary>
+        private NetworkStream _stream;
+
+        /// <summary>
+        ///     Initializes a new instance of the Client class.
         /// </summary>
         /// <param name="ip">Contains the given IP address.</param>
         /// <param name="port">Possible given port. Default is set to 5000.</param>
         public Client(IPAddress ip, int port = 5000)
         {
             _ep = new IPEndPoint(ip, port);
-            _port = port;
+            Port = port;
         }
 
         /// <summary>
-        /// Initializes a new instance of the Client class.
+        ///     Initializes a new instance of the Client class.
         /// </summary>
         /// <param name="client">Contains the given client.</param>
         public Client(TcpClient client)
@@ -58,42 +56,29 @@ namespace NetworkLib.Client
         }
 
         /// <summary>
-        /// Represents the ClientDataReceivedEventArgs.
+        ///     Gets or sets a value indicating whether the client is active or not.
         /// </summary>
-        public event EventHandler<ClientDataReceivedEventArgs> OnDataReceived;
+        public bool IsActive { get; private set; }
 
         /// <summary>
-        /// Represents the ConnectionLostEventArgs.
+        ///     Gets the port.
         /// </summary>
-        public event EventHandler<ConnectionLostEventArgs> OnConnectionLost;
+        public int Port { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the client is active or not.
+        ///     Gets the client's IP address.
         /// </summary>
-        public bool IsActive { get; set; }
-
-        /// <summary>
-        /// Gets the port.
-        /// </summary>
-        public int Port => _port;
-
-        /// <summary>
-        /// Gets the client's IP address.
-        /// </summary>
-        public IPAddress Ip => ((IPEndPoint)_client.Client.RemoteEndPoint).Address;
+        public IPAddress Ip => ((IPEndPoint) _client.Client.RemoteEndPoint).Address;
 
         internal NetworkStream Stream => _stream;
 
         /// <summary>
-        /// Starts the client.
+        ///     Starts the client.
         /// </summary>
         /// <exception cref="InvalidOperationException">Is thrown if the client has already been instantiated and started.</exception>
         public void Start()
         {
-            if (IsActive)
-            {
-                throw new InvalidOperationException("Client has been already started.");
-            }
+            if (IsActive) throw new InvalidOperationException("Client has been already started.");
 
             try
             {
@@ -121,32 +106,30 @@ namespace NetworkLib.Client
         }
 
         /// <summary>
-        /// Stops the client.
+        ///     Stops the client.
         /// </summary>
         /// <exception cref="InvalidOperationException">Is thrown if the client has already been stopped.</exception>
         public void Stop()
         {
-            if (!IsActive)
-            {
-                throw new InvalidOperationException("Client has already been stopped!");
-            }
+            if (!IsActive) throw new InvalidOperationException("Client has already been stopped!");
 
             _client.Close();
             IsActive = false;
         }
 
         /// <summary>
-        /// Sends given data to the server.
+        ///     Sends given data to the server.
         /// </summary>
         /// <param name="data">Contains the data as a byte array.</param>
-        public void SendToServer(byte[] data)
+        public void SendToServer(IEnumerable<byte> data)
         {
             try
             {
-                var packet = Packet.Packet.GeneratePacket(data);
+                var tmpData = data.ToArray();
+                var packet = Packet.Packet.GeneratePacket(tmpData);
 
-                Log.Start($"Packet successfully generated for {data.Length} amount on bytes." +
-                          $"Writing packet into stream.");
+                Log.Start($"Packet successfully generated for {tmpData.Length} amount on bytes." +
+                          "Writing packet into stream.");
                 _stream.Write(packet, 0, packet.Length);
             }
             catch (ObjectDisposedException e)
@@ -166,25 +149,35 @@ namespace NetworkLib.Client
         }
 
         /// <summary>
-        /// Fires the <see cref="OnDataReceived"/> event if the client receives new data.
+        ///     Represents the ClientDataReceivedEventArgs.
+        /// </summary>
+        public event EventHandler<ClientDataReceivedEventArgs> OnDataReceived;
+
+        /// <summary>
+        ///     Represents the ConnectionLostEventArgs.
+        /// </summary>
+        public event EventHandler<ConnectionLostEventArgs> OnConnectionLost;
+
+        /// <summary>
+        ///     Fires the <see cref="OnDataReceived" /> event if the client receives new data.
         /// </summary>
         /// <param name="data">Contains the received data.</param>
-        protected void FireOnDataReceived(byte[] data)
+        private void FireOnDataReceived(IEnumerable<byte> data)
         {
             OnDataReceived?.Invoke(this, new ClientDataReceivedEventArgs(data));
         }
 
         /// <summary>
-        /// Fires the <see cref="OnConnectionLost"/> event if the connection has been lost.
+        ///     Fires the <see cref="OnConnectionLost" /> event if the connection has been lost.
         /// </summary>
         /// <param name="message">[Optional] The message info.</param>
-        protected void FireOnConnectionLost(string message = "")
+        private void FireOnConnectionLost(string message = "")
         {
             OnConnectionLost?.Invoke(this, new ConnectionLostEventArgs(message));
         }
 
         /// <summary>
-        /// Receives data from the connection between server and client.
+        ///     Receives data from the connection between server and client.
         /// </summary>
         private void ReceiveData()
         {

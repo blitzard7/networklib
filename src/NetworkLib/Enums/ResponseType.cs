@@ -1,7 +1,7 @@
 ﻿namespace NetworkLib.Enums
 {
     /// <summary>
-    /// Represents the ResponseType enumeration.
+    ///     Represents the ResponseType enumeration.
     /// </summary>
     public enum ResponseType
     {

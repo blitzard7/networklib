@@ -9,8 +9,9 @@ namespace NetworkLib.Server
     /// <seealso cref="T:System.EventArgs" />
     public class NewClientConnectedEventArgs : EventArgs
     {
+        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="NewClientConnectedEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="T:NetworkLib.Server.NewClientConnectedEventArgs" /> class.
         /// </summary>
         /// <param name="c">Contains the new connected client.</param>
         public NewClientConnectedEventArgs(Client.Client c)
@@ -19,7 +20,7 @@ namespace NetworkLib.Server
         }
 
         /// <summary>
-        /// Gets the new connected client.
+        ///     Gets the new connected client.
         /// </summary>
         /// <value>
         ///     Contains information about the new connected client.
