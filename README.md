@@ -1,6 +1,4 @@
 # networklib 
-## Build Status
-[![Build Status](https://samanta-mika.visualstudio.com/_apis/public/build/definitions/60e9c34c-6d2b-4310-a617-5b28af2c0fcf/5/badge)](https://samanta-mika.visualstudio.com/Networklibrary/_build/index?definitionId=5)
 ## Features
 * Server
 
