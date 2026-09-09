@@ -1,4 +1,4 @@
-# networklib [WIP]
+# networklib
 ## Features
 * Server
 
